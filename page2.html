@@ -52,7 +52,7 @@
                 const asteroid = asteroids[i];
                 const distance = Math.sqrt((asteroid.x - clickX)**2 + (asteroid.y - clickY)**2);
 
-                if (distance < 30) { // Increased value for larger clicking area
+                if (distance < 5) { // Increased value for larger clicking area
                     asteroids.splice(i, 1);
                     return; // Exit the function early if an asteroid was clicked
                 }
@@ -172,8 +172,9 @@
             const currentTime = Date.now();
             const elapsedTime = ((currentTime - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds
 
-            // Create a new asteroid every 100 frames
-            if (frameCount % Math.floor(100 * (1 - 0.1 * Math.floor(elapsedTime / 10))) === 0) {
+            // Create a new asteroid every 100 frames, with the rate increasing by 10% every 3 seconds
+            const rate = 100 * (1 - 0.1 * Math.floor(elapsedTime / 3));
+            if (frameCount % Math.floor(rate) === 0) {
                 createAsteroid();
             }
             frameCount++;
