@@ -44,18 +44,39 @@
         ctx.fillText("Tap to start", canvas.width / 2, canvas.height / 2);
 
         canvas.addEventListener("click", function(event) {
+            const clickX = event.clientX;
+            const clickY = event.clientY;
+
+            // Check if an asteroid was clicked
+            for (let i = asteroids.length - 1; i >= 0; i--) {
+                const asteroid = asteroids[i];
+                const distance = Math.sqrt((asteroid.x - clickX)**2 + (asteroid.y - clickY)**2);
+
+                if (distance < 10) { // Increased value for larger clicking area
+                    asteroids.splice(i, 1);
+                    return; // Exit the function early if an asteroid was clicked
+                }
+            }
+
+            // Game start/stop logic
             if (!isRunning) {
                 if (planetHealth <= 0) {
-                    // Reset the game state
-                    planetHealth = 100;
-                    asteroids = [];
-                    updateHealth();
+                    // Reset the game state after a delay
+                    setTimeout(function() {
+                        planetHealth = 100;
+                        asteroids = [];
+                        updateHealth();
+                        isRunning = true; // Start the game
+                        startTime = Date.now(); // Record the start time
+                        gameLoop(); // Start the game loop
+                        backButton.style.display = "none"; // Hide the button
+                    }, 3000); // 3 second delay
+                } else {
+                    isRunning = true; // Start the game
+                    startTime = Date.now(); // Record the start time
+                    gameLoop(); // Start the game loop
+                    backButton.style.display = "none"; // Hide the button
                 }
-
-                isRunning = true; // Start the game
-                startTime = Date.now(); // Record the start time
-                gameLoop(); // Start the game loop
-                backButton.style.display = "none"; // Hide the button
             } else if (planetHealth <= 0) {
                 isRunning = false; // Stop the game
                 const endTime = Date.now();
@@ -68,20 +89,6 @@
 
         backButton.addEventListener("click", function() {
             window.location.href = "index.html";
-        });
-
-        canvas.addEventListener("click", function(event) {
-            const clickX = event.clientX;
-            const clickY = event.clientY;
-
-            for (let i = asteroids.length - 1; i >= 0; i--) {
-                const asteroid = asteroids[i];
-                const distance = Math.sqrt((asteroid.x - clickX)**2 + (asteroid.y - clickY)**2);
-
-                if (distance < 5) { // Increased value for larger clicking area
-                    asteroids.splice(i, 1);
-                }
-            }
         });
 
         function updateHealth() {
