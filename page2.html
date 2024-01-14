@@ -5,18 +5,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Planet Defender Game</title>
         <link rel="stylesheet" href="styles2.css">
+        <style>
+            #back-button {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: none;
+            }
+        </style>
     </head>
     <body>
         <div id="game-container">
             <div id="health-display">Health: <span id="health-value">100</span></div>
             <div id="time-display"></div>
             <canvas id="game-canvas" width="800" height="600"></canvas>
+            <button id="back-button">Back to Home</button>
         </div>
         <script src="script.js"></script>
     </body>
 
     <script>
         const canvas = document.getElementById("game-canvas");
+        const backButton = document.getElementById("back-button");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         const ctx = canvas.getContext("2d");
@@ -28,26 +39,35 @@
         let frameCount = 0;
         let startTime = null;
 
-        window.addEventListener("keydown", function(event) {
-            if (event.code === "Space") {
-                if (!isRunning && planetHealth <= 0) {
+        // Display "Tap to start" before the game starts
+        ctx.font = "30px Arial";
+        ctx.fillText("Tap to start", canvas.width / 2, canvas.height / 2);
+
+        canvas.addEventListener("click", function(event) {
+            if (!isRunning) {
+                if (planetHealth <= 0) {
                     // Reset the game state
                     planetHealth = 100;
                     asteroids = [];
                     updateHealth();
                 }
 
-                isRunning = !isRunning; // Toggle the running state
-                if (isRunning) {
-                    startTime = Date.now(); // Record the start time
-                    gameLoop(); // Start the game loop
-                } else if (startTime) {
-                    const endTime = Date.now();
-                    const elapsedTime = (endTime - startTime) / 1000; // Calculate elapsed time in seconds
-                    document.getElementById("time-display").textContent = `Game time: ${elapsedTime} seconds`;
-                    startTime = null;
-                }
+                isRunning = true; // Start the game
+                startTime = Date.now(); // Record the start time
+                gameLoop(); // Start the game loop
+                backButton.style.display = "none"; // Hide the button
+            } else if (planetHealth <= 0) {
+                isRunning = false; // Stop the game
+                const endTime = Date.now();
+                const elapsedTime = (endTime - startTime) / 1000; // Calculate elapsed time in seconds
+                document.getElementById("time-display").textContent = `Game time: ${elapsedTime} seconds`;
+                startTime = null;
+                backButton.style.display = "block"; // Show the button
             }
+        });
+
+        backButton.addEventListener("click", function() {
+            window.location.href = "index.html";
         });
 
         canvas.addEventListener("click", function(event) {
@@ -117,7 +137,7 @@
                 // Check for collision with the planet
                 const distance = Math.sqrt((asteroid.x - canvas.width / 2)**2 + (asteroid.y - canvas.height / 2)**2);
                 if (distance < 40) {
-                    planetHealth -= 5; // Decreased damage
+                    planetHealth -= 10; // Decreased damage
                     updateHealth();
 
                     // Remove the asteroid from the array

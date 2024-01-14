@@ -46,6 +46,7 @@ body {
 
 .page3 {
     background-color: rgb(56, 55, 55);
+    
     color: white;
     margin: 0;
     height: 100vh;
@@ -53,4 +54,11 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+}
+#back-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
 }
