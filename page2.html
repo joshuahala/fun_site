@@ -5,22 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Planet Defender Game</title>
         <link rel="stylesheet" href="styles2.css">
-        <style>
-            #back-button {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                display: none;
-            }
-        </style>
+       
     </head>
     <body>
         <div id="game-container">
             <div id="health-display">Health: <span id="health-value">100</span></div>
             <div id="time-display"></div>
-            <canvas id="game-canvas" width="800" height="600"></canvas>
-            <button id="back-button">Back to Home</button>
+            <canvas id="game-canvas" width="100" height="400"></canvas>
+            
         </div>
         <script src="script.js"></script>
     </body>
@@ -41,6 +33,7 @@
 
         // Display "Tap to start" before the game starts
         ctx.font = "30px Arial";
+        ctx.fillStyle='white'
         ctx.fillText("Tap to start", canvas.width / 2, canvas.height / 2);
 
         canvas.addEventListener("click", function(event) {
