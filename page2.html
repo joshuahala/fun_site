@@ -52,7 +52,7 @@
                 const asteroid = asteroids[i];
                 const distance = Math.sqrt((asteroid.x - clickX)**2 + (asteroid.y - clickY)**2);
 
-                if (distance < 30) { // Increased value for larger clicking area
+                if (distance < 5) { // Increased value for larger clicking area
                     asteroids.splice(i, 1);
                     return; // Exit the function early if an asteroid was clicked
                 }
@@ -143,7 +143,7 @@
 
                 // Check for collision with the planet
                 const distance = Math.sqrt((asteroid.x - canvas.width / 2)**2 + (asteroid.y - canvas.height / 2)**2);
-                if (distance < 20) {
+                if (distance < 40) {
                     planetHealth -= 10; // Decreased damage
                     updateHealth();
 
