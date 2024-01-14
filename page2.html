@@ -183,9 +183,9 @@
             ctx.fillText(`Health: ${planetHealth}`, canvas.width / 2, canvas.height / 2 - 40);
 
             // Display the timer below the planet
-            ctx.globalAlpha = 0.5; // Make the text partially transparent
-            ctx.font = "20px Arial";
-            ctx.fillText(elapsedTime, canvas.width / 2, canvas.height / 2 + 40);
+            ctx.globalAlpha = 0.8; // Make the text partially transparent
+            ctx.font = "25px Arial";
+            ctx.fillText(elapsedTime, canvas.width / 2, canvas.height / 2 + 80);
             ctx.globalAlpha = 1; // Reset the transparency
 
             requestAnimationFrame(gameLoop); // Continue the game loop
