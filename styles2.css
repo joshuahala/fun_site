@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #222;
+    color: #fff;
+}
+
+#game-container {
+    position: relative;
+}
+
+#health-display {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}

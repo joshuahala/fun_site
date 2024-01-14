@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Title</title>
+    <!-- Add your CSS file here -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="body">
+    <!-- rest of your HTML... -->
+    <div id="score">Score: 0</div>
+    <div id="platform"></div>
+    <div id="end">
+        <h1>Game Over</h1>
+        <p id="finalScore"></p>
+    </div>
+    <script>
+        const platform = document.getElementById('platform');
+        const scoreElement = document.getElementById('score');
+        const end = document.getElementById('end');
+        const finalScoreElement = document.getElementById('finalScore');
+        let score = 0;
+        let invisibleScore = 0;
+        let gameInterval;
+
+        // Make the platform follow the mouse
+        document.addEventListener('mousemove', (event) => {
+            platform.style.left = event.clientX - 50 + 'px'; // Subtract half the platform's width to center it
+            platform.style.top = event.clientY + 'px';
+        });
+
+        function createDot() {
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.textContent = '*';
+            dot.style.left = Math.random() * window.innerWidth + 'px';
+            const duration = Math.random() * 5 + 2; // Random duration between 2s and 7s
+            dot.style.animationDuration = duration + 's';
+            document.body.appendChild(dot);
+
+            // Calculate the score for this dot based on its speed
+            const dotScore = Math.round(10 - (duration - 2) / 3); // Faster dots are worth more points
+
+            // Remove the dot when it's no longer visible
+            dot.addEventListener('animationend', () => {
+                document.body.removeChild(dot);
+                invisibleScore += dotScore;
+                if (invisibleScore >= 500) {
+                    clearInterval(gameInterval);
+                    end.style.display = 'block';
+                    finalScoreElement.textContent = 'Final Score: ' + score;
+                }
+            });
+
+            // Check for intersection with the platform every frame
+            const checkIntersection = setInterval(() => {
+                const dotRect = dot.getBoundingClientRect();
+                const platformRect = platform.getBoundingClientRect();
+
+                if (dotRect.x < platformRect.x + platformRect.width &&
+                    dotRect.x + dotRect.width > platformRect.x &&
+                    dotRect.y < platformRect.y + platformRect.height &&
+                    dotRect.y + dotRect.height > platformRect.y) {
+                    // Intersection detected, remove the dot and increment the score
+                    document.body.removeChild(dot);
+                    clearInterval(checkIntersection);
+                    score += dotScore;
+                    scoreElement.textContent = 'Score: ' + score;
+                }
+            }, 16); // Check every 16 milliseconds (approximately 60 frames per second)
+        }
+
+        function startGame() {
+            score = 0;
+            invisibleScore = 0;
+            scoreElement.textContent = 'Score: ' + score;
+            gameInterval = setInterval(createDot, 200); // Create a new dot every 200 milliseconds
+        }
+
+        end.addEventListener('click', () => {
+            end.style.display = 'none';
+            startGame();
+        });
+
+        startGame();
+    </script>
+</body>
+</html>

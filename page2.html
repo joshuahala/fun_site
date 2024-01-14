@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Planet Defender Game</title>
+        <link rel="stylesheet" href="styles2.css">
+    </head>
+    <body>
+        <div id="game-container">
+            <div id="health-display">Health: <span id="health-value">100</span></div>
+            <div id="time-display"></div>
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+        </div>
+        <script src="script.js"></script>
+    </body>
+
+    <script>
+        const canvas = document.getElementById("game-canvas");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext("2d");
+        const healthValue = document.getElementById("health-value");
+
+        let planetHealth = 100;
+        let asteroids = [];
+        let isRunning = false;
+        let frameCount = 0;
+        let startTime = null;
+
+        window.addEventListener("keydown", function(event) {
+            if (event.code === "Space") {
+                if (!isRunning && planetHealth <= 0) {
+                    // Reset the game state
+                    planetHealth = 100;
+                    asteroids = [];
+                    updateHealth();
+                }
+
+                isRunning = !isRunning; // Toggle the running state
+                if (isRunning) {
+                    startTime = Date.now(); // Record the start time
+                    gameLoop(); // Start the game loop
+                } else if (startTime) {
+                    const endTime = Date.now();
+                    const elapsedTime = (endTime - startTime) / 1000; // Calculate elapsed time in seconds
+                    document.getElementById("time-display").textContent = `Game time: ${elapsedTime} seconds`;
+                    startTime = null;
+                }
+            }
+        });
+
+        canvas.addEventListener("click", function(event) {
+            const clickX = event.clientX;
+            const clickY = event.clientY;
+
+            for (let i = asteroids.length - 1; i >= 0; i--) {
+                const asteroid = asteroids[i];
+                const distance = Math.sqrt((asteroid.x - clickX)**2 + (asteroid.y - clickY)**2);
+
+                if (distance < 20) { // Increased value for larger clicking area
+                    asteroids.splice(i, 1);
+                }
+            }
+        });
+
+        function updateHealth() {
+            healthValue.textContent = planetHealth;
+
+            if (planetHealth <= 0) {
+                // Clear the canvas and display "Game Over"
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.font = "30px Arial";
+                ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2);
+                isRunning = false;
+            }
+        }
+
+        function drawPlanet() {
+            // Draw the planet (circle) in the center of the canvas
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, 30, 0, 2 * Math.PI);
+            ctx.fillStyle = "#00ff00"; // Green color for the planet
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawAsteroid(x, y) {
+            // Draw an asteroid (circle) at the specified position
+            ctx.beginPath();
+            ctx.arc(x, y, 10, 0, 2 * Math.PI);
+            ctx.fillStyle = "#ff0000"; // Red color for asteroids
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function createAsteroid() {
+            // Create an asteroid with a random starting position
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+
+            // Calculate the direction towards the planet
+            const dx = (canvas.width / 2 - x) / 200; // Decreased divisor for slower movement
+            const dy = (canvas.height / 2 - y) / 200; // Decreased divisor for slower movement
+
+            const asteroid = { x, y, dx, dy };
+            asteroids.push(asteroid);
+        }
+
+        function updateAsteroids() {
+            // Update the position of each asteroid
+            for (let i = asteroids.length - 1; i >= 0; i--) {
+                const asteroid = asteroids[i];
+                asteroid.x += asteroid.dx;
+                asteroid.y += asteroid.dy;
+
+                // Check for collision with the planet
+                const distance = Math.sqrt((asteroid.x - canvas.width / 2)**2 + (asteroid.y - canvas.height / 2)**2);
+                if (distance < 40) {
+                    planetHealth -= 5; // Decreased damage
+                    updateHealth();
+
+                    // Remove the asteroid from the array
+                    asteroids.splice(i, 1);
+                } else {
+                    drawAsteroid(asteroid.x, asteroid.y);
+                }
+            }
+        }
+
+        function gameLoop() {
+            if (!isRunning) {
+                return; // Stop the game loop
+            }
+
+            // Clear the canvas on each frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            drawPlanet();
+
+            // Update the asteroids
+            updateAsteroids();
+
+            // Update the timer
+            const currentTime = Date.now();
+            const elapsedTime = ((currentTime - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds
+
+            // Create a new asteroid every 100 frames
+            if (frameCount % Math.floor(100 * (1 - 0.1 * Math.floor(elapsedTime / 10))) === 0) {
+                createAsteroid();
+            }
+            frameCount++;
+
+            // Display the health above the planet
+            ctx.font = "20px Arial";
+            ctx.fillText(`Health: ${planetHealth}`, canvas.width / 2, canvas.height / 2 - 40);
+
+            // Display the timer below the planet
+            ctx.globalAlpha = 0.5; // Make the text partially transparent
+            ctx.font = "20px Arial";
+            ctx.fillText(elapsedTime, canvas.width / 2, canvas.height / 2 + 40);
+            ctx.globalAlpha = 1; // Reset the transparency
+
+            requestAnimationFrame(gameLoop); // Continue the game loop
+        }
+
+        // Initialize health display
+        updateHealth();
+
+        // Draw the planet initially
+        if (!isRunning) {
+            drawPlanet();
+        }
+
+        window.addEventListener("resize", function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</html> 

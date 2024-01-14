@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page3">
+    <canvas id="canvas"></canvas>
+    
+    
+</body>
+</html>
+
+<script>
+    let canvas = document.getElementById('canvas');
+    let context = canvas.getContext("2d");
+    let window_height = window.innerHeight;
+    let window_width = window.innerWidth;
+
+    canvas.height = window_height;
+    canvas.width = window_width;
+    canvas.style.background = "#38373";
+
+    class Circle {
+        constructor(xpos, ypos, radius, color) {
+            this.xpos = xpos;
+            this.ypos = ypos;
+            this.radius = radius;
+            this.color= color;
+        }
+        
+        draw(context) {
+            context.beginPath();
+            context.lineWidth = 5;
+            context.arc(this.xpos, this.ypos, this.radius, 0, Math.PI * 2, false);
+            context.stroke();
+            context.closePath();
+        }
+    }
+
+    let my_circle = new Circle(100, 200, 50, "black");
+    my_circle.draw(context);
+
+   
+    
+</script>

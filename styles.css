@@ -1,0 +1,56 @@
+body {
+    background-color: rgb(56, 55, 55);
+    color: white;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.body2 {
+    background-color: rgb(56, 55, 55);
+    color: white;
+    margin: 0;
+    height: 100vh;
+    
+}
+
+#end {
+    display: none;
+}
+
+.dot {
+    position: absolute;
+    animation: fall linear 4s ;
+}
+
+#platform {
+    position: absolute;
+    width: 100px;
+    height: 10px;
+    background: #e3e1e1;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+}
+
+@keyframes fall {
+    0% { top: -50px; }
+    100% { top: 100%; }
+}
+
+.page3 {
+    background-color: rgb(56, 55, 55);
+    color: white;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
