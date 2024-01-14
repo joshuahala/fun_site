@@ -78,7 +78,7 @@
                 const asteroid = asteroids[i];
                 const distance = Math.sqrt((asteroid.x - clickX)**2 + (asteroid.y - clickY)**2);
 
-                if (distance < 20) { // Increased value for larger clicking area
+                if (distance < 5) { // Increased value for larger clicking area
                     asteroids.splice(i, 1);
                 }
             }
