@@ -1,7 +1,9 @@
 body {
    font-family: 'Courier New', Courier, monospace;
    text-align: center;
-   background-color:rgb(116, 58, 58);
+   /* background-color:rgb(116, 58, 58); */
+   background-color:rgb(88, 52, 106);
+
 }
 
 body h1{

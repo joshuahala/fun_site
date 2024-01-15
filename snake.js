@@ -34,7 +34,7 @@ window.onload = function() {
     
     placeFood();
     document.addEventListener("keyup", changeDirection);
-    board.addEventListener("ontouchmove", touched);
+    board.addEventListener("touchmove", touched);
     // update();
     setInterval(update, 1000/10);
 }
