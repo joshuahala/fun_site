@@ -131,7 +131,7 @@ function update() {
     }
 
     //game over conditions
-    if (snakeX < 0 || snakeX > cols * blocksize || snakeY < 0 || snakeY > rows * blocksize) {
+    if (snakeX < 0 || snakeX > cols * blocksize - 1 || snakeY < 0 || snakeY > rows * blocksize - 1) {
         gameOver = true;
         document.getElementById('overlay').style.display = "block";
         document.getElementById('topScore').style.display = "block"
