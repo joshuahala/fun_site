@@ -34,6 +34,7 @@ window.onload = function() {
     
     placeFood();
     document.addEventListener("keyup", changeDirection);
+    board.addEventListener("ontouchmove", touched);
     // update();
     setInterval(update, 1000/10);
 }
@@ -94,6 +95,10 @@ function update() {
         }
     }
 
+}
+
+function touched() {
+    alert("you swiped?");
 }
 
 
