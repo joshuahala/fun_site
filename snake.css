@@ -1,0 +1,10 @@
+body {
+   font-family: 'Courier New', Courier, monospace;
+   text-align: center;
+   background-color:rgb(116, 58, 58);
+}
+
+body h1{
+    /* position: relative; */
+    right: 250px;
+}
