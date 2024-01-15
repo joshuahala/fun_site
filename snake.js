@@ -1,5 +1,8 @@
 //board
-var blocksize = 25;
+var screenWidth = window.innerWidth;
+var screenHeight = window.innerHeight;
+var blocksize = Math.ceil((screenHeight * 0.8)/20);
+// var blocksize = 25;
 var rows = 20;
 var cols = 20;
 var board;
@@ -48,12 +51,15 @@ function update() {
     context.fillStyle = "rgb(130, 93, 33)";
     context.fillRect(foodX, foodY, blocksize, blocksize);
 
+    document.getElementById('score').innerHTML = snakeX + " " + snakeY;
+
+
     //eat food
     if (snakeX == foodX && snakeY == foodY) {
         snakeBody.push([foodX, foodY]);
         placeFood();
         score++;
-        document.getElementById('score').innerHTML = score;
+        // document.getElementById('score').innerHTML = score;
 
 
     }
@@ -115,4 +121,5 @@ function changeDirection(e) {
 function placeFood() {
     foodX = Math.floor(Math.random() * cols) * blocksize;
     foodY = Math.floor(Math.random() * rows) * blocksize;
+    console.log(foodX,foodY);
 }
