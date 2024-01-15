@@ -49,12 +49,12 @@ window.onload = function() {
       startY = e.touches[0].clientY;
     });
 
-    document.addEventListener('touchmove', (e) => {
+    board.addEventListener('touchmove', (e) => {
         e.preventDefault();
     })
 
 
-    document.addEventListener('touchend', (e) => {
+    board.addEventListener('touchend', (e) => {
       // Record the ending coordinates
       e.preventDefault();
       endX = e.changedTouches[0].clientX;
@@ -63,9 +63,18 @@ window.onload = function() {
       swiped(startX, startY, endX, endY);
     });
 
+
     
     // update();
     setInterval(update, 1000/10);
+}
+
+//restart
+function restart() {
+    placeFood();
+    restartHead();
+    document.getElementById('overlay').style.display = "none";
+    gameOver = false;
 }
 
 function update() {
@@ -114,13 +123,14 @@ function update() {
     //game over conditions
     if (snakeX < 0 || snakeX > cols * blocksize || snakeY < 0 || snakeY > rows * blocksize) {
         gameOver = true;
-        alert("Game Over");
+        document.getElementById('overlay').style.display = "block";
     }
-
+    
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
             gameOver = true;
-            alert("Game Over")
+            document.getElementById('overlay').style.display = "block";
+            
         }
     }
 
@@ -131,26 +141,26 @@ function swiped(startX, startY, endX, endY) {
     //vertical change
     if (Math.abs(startY - endY) > Math.abs(startX - endX) ) {
         //upward movement
-        if (endY < startY) {
+        if (endY < startY && velocityY != 1) {
             velocityX = 0;
             velocityY = -1;
         }
         //downward movement
-        else {
+        else if (velocityY != -1) {
             velocityX = 0;
             velocityY = 1;
 
         }
     }
     //horizontal change
-    else if (Math.abs(startX - endX) > Math.abs(startY - endY)) {
+    else if (Math.abs(startX - endX) > Math.abs(startY - endY) ) {
         //right movement
-        if (endX > startX) {
+        if (endX > startX && velocityX != -1) {
             velocityX = 1;
             velocityY = 0;
         }
         //left movement
-        else {
+        else if (velocityX != 1) {
             velocityX = -1;
             velocityY = 0;
 
@@ -184,4 +194,13 @@ function placeFood() {
     foodX = Math.floor(Math.random() * cols) * blocksize;
     foodY = Math.floor(Math.random() * rows) * blocksize;
     console.log(foodX,foodY);
+}
+function restartHead() {
+    snakeX = blocksize * 5;
+    snakeY = blocksize * 5;
+    
+    snakeBody = []
+    
+    velocityX = 0;
+    velocityY = 0;
 }
