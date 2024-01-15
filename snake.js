@@ -44,6 +44,7 @@ window.onload = function() {
 
     document.addEventListener('touchstart', (e) => {
       // Record the starting coordinates
+      e.preventDefault();
       startX = e.touches[0].clientX
       startY = e.touches[0].clientY;
     });
@@ -51,6 +52,7 @@ window.onload = function() {
 
     document.addEventListener('touchend', (e) => {
       // Record the ending coordinates
+      e.preventDefault();
       endX = e.changedTouches[0].clientX;
       endY = e.changedTouches[0].clientY;
       
