@@ -33,8 +33,31 @@ window.onload = function() {
     
     
     placeFood();
+
     document.addEventListener("keyup", changeDirection);
-    board.addEventListener("touchmove", touched);
+
+    //touch controls
+    let startX;
+    let startY;
+    let endX;
+    let endY;
+
+    document.addEventListener('touchstart', (e) => {
+      // Record the starting coordinates
+      startX = e.touches[0].clientX
+      startY = e.touches[0].clientY;
+    });
+
+
+    document.addEventListener('touchend', (e) => {
+      // Record the ending coordinates
+      endX = e.changedTouches[0].clientX;
+      endY = e.changedTouches[0].clientY;
+      
+      swiped(startX, startY, endX, endY);
+    });
+
+    
     // update();
     setInterval(update, 1000/10);
 }
@@ -97,10 +120,38 @@ function update() {
 
 }
 
-function touched() {
-    alert("you swiped?");
-}
+//touch controls
+function swiped(startX, startY, endX, endY) {
+    //vertical change
+    if (Math.abs(startY - endY) > Math.abs(startX - endX) ) {
+        //upward movement
+        if (endY < startY) {
+            velocityX = 0;
+            velocityY = -1;
+        }
+        //downward movement
+        else {
+            velocityX = 0;
+            velocityY = 1;
 
+        }
+    }
+    //horizontal change
+    else if (Math.abs(startX - endX) > Math.abs(startY - endY)) {
+        //right movement
+        if (endX > startX) {
+            velocityX = 1;
+            velocityY = 0;
+        }
+        //left movement
+        else {
+            velocityX = -1;
+            velocityY = 0;
+
+        }
+    }
+    
+}
 
 
 
