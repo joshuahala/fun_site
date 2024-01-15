@@ -1,7 +1,7 @@
 //board
 var screenWidth = window.innerWidth;
 var screenHeight = window.innerHeight;
-var blocksize = Math.ceil((screenHeight * 0.8)/20);
+var blocksize = screenWidth > screenHeight ? Math.ceil((screenHeight * 0.8)/20) : Math.ceil((screenWidth * 0.8)/20);
 // var blocksize = 25;
 var rows = 20;
 var cols = 20;
