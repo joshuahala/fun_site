@@ -24,13 +24,14 @@ var foodY = blocksize * 10;
 var gameOver = false;
 
 var score = 0
+var topScore = 0
 
 window.onload = function() {
     board = document.getElementById('board');
     board.height = rows * blocksize;
     board.width = cols * blocksize;
     context = board.getContext("2d"); 
-    
+    document.getElementById('score').style.display = "block";    
     
     placeFood();
 
@@ -63,6 +64,14 @@ window.onload = function() {
       swiped(startX, startY, endX, endY);
     });
 
+    //press enter to restart
+    document.addEventListener('keydown', (e) => {
+        if (e.key == "Enter" && gameOver == true
+        ) {
+            restart();
+        }
+    });
+
 
     
     // update();
@@ -73,6 +82,7 @@ window.onload = function() {
 function restart() {
     placeFood();
     restartHead();
+    score = 0;
     document.getElementById('overlay').style.display = "none";
     gameOver = false;
 }
@@ -90,7 +100,7 @@ function update() {
     context.fillStyle = "rgb(130, 93, 33)";
     context.fillRect(foodX, foodY, blocksize, blocksize);
 
-    document.getElementById('score').innerHTML = snakeX + " " + snakeY;
+    document.getElementById('scoreSpan').innerHTML = score;
 
 
     //eat food
@@ -124,12 +134,20 @@ function update() {
     if (snakeX < 0 || snakeX > cols * blocksize || snakeY < 0 || snakeY > rows * blocksize) {
         gameOver = true;
         document.getElementById('overlay').style.display = "block";
+        document.getElementById('topScore').style.display = "block"
+        if (score > topScore) {
+            document.getElementById('topScoreSpan').innerHTML = score;
+        }
     }
     
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
             gameOver = true;
             document.getElementById('overlay').style.display = "block";
+            document.getElementById('topScore').style.display = "block"
+            if (score > topScore) {
+                document.getElementById('topScoreSpan').innerHTML = score;
+            }
             
         }
     }

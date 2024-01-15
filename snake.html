@@ -10,12 +10,14 @@
 <body>
     <h1>Snake</h1>
     <canvas id="board"></canvas>
-    <h1>Score:<span id="score"></span></h1>
     <div id="overlay">
         <h1 id="gameOverText">Game Over!</h1>
-        <h2 id="btnRestart" onclick="restart()">Restart</h2>
-
+        <h2 id="btnRestart" onclick="restart()">Click to Restart</h2>
+        <p style="color:rgb(150, 150, 150);">Or Press Enter</p>
+        
     </div>
+    <h1 id="score">Current Score:<span id="scoreSpan"></span></h1>
+    <h1 id="topScore">Top Score:<span id="topScoreSpan"></span></h1>
     
 </body>
 </html>
