@@ -1,0 +1,11 @@
+
+
+body {
+    background-color: rgb(35, 35, 73);
+    text-align: center;
+}
+
+#canvas {
+    position: relative;
+    top: 100px;
+}
